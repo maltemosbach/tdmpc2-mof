@@ -137,7 +137,7 @@ class WorldModel(nn.Module):
 		eps = torch.randn_like(mean)
 
 		if self.cfg.multitask: # Mask out unused action dimensions
-			mean = mean * self._action_masks[task]
+			mu = mu * self._action_masks[task]
 			log_std = log_std * self._action_masks[task]
 			eps = eps * self._action_masks[task]
 			action_dims = self._action_masks.sum(-1)[task].unsqueeze(-1)
@@ -154,13 +154,11 @@ class WorldModel(nn.Module):
 		action = mean + eps * log_std.exp()
 		mean, action, log_prob = math.squash(mean, action, log_prob)
 
-		entropy_scale = scaled_log_prob / (log_prob + 1e-8)
 		info = TensorDict({
 			"mean": mean,
 			"log_std": log_std,
-			"action_prob": 1.,
 			"entropy": -log_prob,
-			"scaled_entropy": -log_prob * entropy_scale,
+			"entropy_scale": self.cfg.entropy_coef * scaled_log_prob / log_prob,
 		})
 		return action, info
 

@@ -13,7 +13,7 @@ dependencies:
   - pytorch-cuda=12.4
   - torchvision=0.15.2
   - pip:
-    - dm-control==1.0.16
+    #- dm-control==1.0.16
     - glfw==2.7.0
     - gymnasium==0.29.1
     - ffmpeg==1.4
@@ -25,7 +25,7 @@ dependencies:
     - submitit==1.5.1
     - omegaconf==2.3.0
     - moviepy==1.0.3
-    - mujoco==3.1.2
+    #- mujoco==3.1.2
     - numpy==1.24.4
     - tensordict-nightly==2024.11.14
     - torchrl-nightly==2024.11.14
@@ -37,20 +37,20 @@ dependencies:
     ####################
     # Gym:
     # (unmaintained but required for maniskill2/meta-world)
-    # - "cython<3"
-    # - wheel==0.38.0
-    # - setuptools==65.5.0
-    # - mujoco==2.3.1
-    # - mujoco-py==2.1.2.14
-    # - gym==0.21.0
+    - "cython<3"
+    - wheel==0.38.0
+    - setuptools==65.5.0
+    - mujoco==2.3.1
+    - mujoco-py==2.1.2.14
+    #- gym==0.21.0
     ####################
     # ManiSkill2:
     # (requires gym==0.21.0 which occasionally breaks)
-    # - mani-skill2==0.4.1
+    #- mani-skill2==0.4.1
     ####################
     # Meta-World:
     # (requires gym==0.21.0 which occasionally breaks)
-    # - git+https://github.com/Farama-Foundation/Metaworld.git@04be337a12305e393c0caf0cbf5ec7755c7c8feb
+    #- git+https://github.com/Farama-Foundation/Metaworld.git@04be337a12305e393c0caf0cbf5ec7755c7c8feb
     ####################
     # MyoSuite:
     # - myosuite

@@ -45,8 +45,8 @@ class OfflineTrainer(Trainer):
 		fps = sorted(glob(str(fp)))
 		assert len(fps) > 0, f'No data found at {fp}'
 		print(f'Found {len(fps)} files in {fp}')
-		if len(fps) < (20 if self.cfg.task == 'mt80' else 4):
-			print(f'WARNING: expected 20 files for mt80 task set, 4 files for mt30 task set, found {len(fps)} files.')
+		assert len(fps) == (20 if self.cfg.task == 'mt80' else 4), \
+			f'Expected 20 files for mt80 task set, 4 files for mt30 task set, found {len(fps)} files.'
 	
 		# Create buffer for sampling
 		_cfg = deepcopy(self.cfg)
@@ -59,10 +59,11 @@ class OfflineTrainer(Trainer):
 			assert td.shape[1] == _cfg.episode_length, \
 				f'Expected episode length {td.shape[1]} to match config episode length {_cfg.episode_length}, ' \
 				f'please double-check your config.'
-			self.buffer.load(td)
+			for i in range(len(td)):
+				self.buffer.add(td[i])
 		expected_episodes = _cfg.buffer_size // _cfg.episode_length
-		if self.buffer.num_eps != expected_episodes:
-			print(f'WARNING: buffer has {self.buffer.num_eps} episodes, expected {expected_episodes} episodes for {self.cfg.task} task set.')
+		assert self.buffer.num_eps == expected_episodes, \
+			f'Buffer has {self.buffer.num_eps} episodes, expected {expected_episodes} episodes.'
 
 	def train(self):
 		"""Train a TD-MPC2 agent."""
