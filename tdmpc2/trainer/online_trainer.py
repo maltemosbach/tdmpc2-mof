@@ -5,6 +5,8 @@ import torch
 from tensordict.tensordict import TensorDict
 from trainer.base import Trainer
 
+UPDATE_FREQ = 25
+
 
 class OnlineTrainer(Trainer):
 	"""Trainer class for single-task online TD-MPC2 training."""
@@ -102,11 +104,10 @@ class OnlineTrainer(Trainer):
 
 			# Update agent
 			if self._step >= self.cfg.seed_steps:
-				if self._step == self.cfg.seed_steps:
-					num_updates = self.cfg.seed_steps
-					print('Pretraining agent on seed data...')
-				else:
+				if self._step % UPDATE_FREQ == 0:
 					num_updates = 1
+				else:
+					num_updates = 0
 				for _ in range(num_updates):
 					_train_metrics = self.agent.update(self.buffer)
 				train_metrics.update(_train_metrics)
