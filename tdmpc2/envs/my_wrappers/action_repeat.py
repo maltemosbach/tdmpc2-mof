@@ -7,6 +7,7 @@ class ActionRepeat(gym.Wrapper):
     def __init__(self, env: gym.Env, action_repeat: int = 1) -> None:
         super().__init__(env)
         self.action_repeat = action_repeat
+        self.accumulate = False
 
     def step(self, action: np.ndarray) -> Tuple[np.ndarray, float, bool, dict]:
         accumulated_reward = 0.0
@@ -15,4 +16,6 @@ class ActionRepeat(gym.Wrapper):
             accumulated_reward += reward
             if done:
                 break
-        return obs, accumulated_reward, done, info
+        if self.accumulate:
+            reward = accumulated_reward
+        return obs, reward, done, info
