@@ -85,7 +85,7 @@ class OnlineTrainer(Trainer):
 				if self._step > 0:
 					train_metrics.update(
 						episode_reward=torch.tensor([td['reward'] for td in self._tds[1:]]).sum(),
-						episode_success=info['success'],
+						episode_success=self.env.success(),
 					)
 					train_metrics.update(self.common_metrics())
 					self.logger.log(train_metrics, 'train')
